@@ -1,0 +1,38 @@
+services:
+  db:
+    image: mysql:9.0
+    container_name: mysql-centertech-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - center-tech-network
+
+  phpmyadmin:
+    container_name: phpmyadmin-centertech
+    image: phpmyadmin:5.2
+    restart: always
+    ports:
+      - "8888:80"
+    networks:
+      - center-tech-network
+    environment:
+      PMA_HOST: mysql-centertech-db
+    depends_on:
+      - db
+
+networks:
+  center-tech-network:
+    name: center-tech-network
+    driver: bridge
+    
+volumes:
+  db:
+    driver: local
