@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('serial_number', 100)->nullable();
             $table->text('description')->nullable();
             $table->decimal('price', 9, 2);
-            $table->boolean('paid');
+            $table->boolean('paid')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

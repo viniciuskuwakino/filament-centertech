@@ -6,12 +6,16 @@ use App\Filament\Resources\ClientResource\Pages;
 use App\Filament\Resources\ClientResource\RelationManagers;
 use App\Models\Client;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,27 +37,30 @@ class ClientResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label('Nome')
-                    ->required()
-                    ->maxLength(100),
-                TextInput::make('phone')
-                    ->label('Contato')
-                    ->mask(RawJs::make(<<<'JS'
-                        $input.length < 15 ? '(99) 9999-9999' : '(99) 99999-9999'
-                        console.log($input)
-                    JS))
-                    ->stripCharacters(['-', '(', ')', ' ']),
-                // PhoneNumber::make('phone')
-                //     ->label('Contato')
-                //     ->mask('(99) 99999-9999'),
-                    
-                // TextInput::make('phone')
-                //     ->label('Contato')
-                //     ->tel()
-                //     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
-                //     ->required()
-                //     ->maxLength(12),
+                Grid::make()
+                ->schema([
+                    TextInput::make('name')
+                        ->label('Nome')
+                        ->required()
+                        ->maxLength(100)
+                        ->columnSpan(1),
+                    TextInput::make('phone')
+                        ->label('Contato')
+                        ->mask(RawJs::make(<<<'JS'
+                            $input.length < 15 ? '(99) 9999-9999' : '(99) 99999-9999'
+                            console.log($input)
+                        JS))
+                        ->stripCharacters(['-', '(', ')', ' '])
+                        ->columnSpan(1),
+                ])
+                ->registerActions([
+                    Action::make('setMaximum')
+                        ->icon('heroicon-m-star')
+                        ->action(function ($data) {
+                            $set = $data;
+                        }),
+                ])
+                ->columns(2)
             ]);
     }
 
@@ -86,8 +93,11 @@ class ClientResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->color('info'),
-                Tables\Actions\EditAction::make(),
+                ViewAction::make()
+                    ->color('info'),
+
+                EditAction::make()
+                    ->color('warning'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
