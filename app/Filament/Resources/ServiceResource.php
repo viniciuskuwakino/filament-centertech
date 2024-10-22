@@ -14,6 +14,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\Section as InfolistSection;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
@@ -50,6 +54,7 @@ class ServiceResource extends Resource
                                 ->native(false)
                                 ->searchable()
                                 ->required(),
+
                             Money::make('price')
                                 ->label('Preço do serviço')
                                 ->minLength(1)
@@ -108,6 +113,7 @@ class ServiceResource extends Resource
                 TextColumn::make('client.name')
                     ->label('Cliente')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('device')
                     ->label('Dispositivo')
@@ -156,6 +162,26 @@ class ServiceResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                InfolistSection::make('Cliente')
+                    ->schema([
+                        TextEntry::make('client.name')
+                            ->label('Cliente'),
+
+                        TextEntry::make('price')
+                            ->label('Preço do serviço')
+                            ->money('BRL'),
+
+                        IconEntry::make('paid')
+                            ->label('Pago')
+                            ->boolean()
+                    ])->columns(4)
             ]);
     }
 
