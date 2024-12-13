@@ -43,66 +43,66 @@ class ServiceResource extends Resource
         return $form
             ->schema([
                 Grid::make()
-                ->schema([
+                    ->schema([
 
-                    Section::make('Cliente')
-                        ->schema([
-                            Select::make('client_id')
-                                ->label('Cliente')
-                                ->relationship('client', 'name')
-                                ->preload()
-                                ->native(false)
-                                ->searchable()
-                                ->required(),
+                        Section::make('Cliente')
+                            ->schema([
+                                Select::make('client_id')
+                                    ->label('Cliente')
+                                    ->relationship('client', 'name')
+                                    ->preload()
+                                    ->native(false)
+                                    ->searchable()
+                                    ->required(),
 
-                            Money::make('price')
-                                ->label('Preço do serviço')
-                                ->minLength(1)
-                                ->maxLength(10)
-                                ->live()
-                                ->prefix('R$')
-                                ->required(),
+                                Money::make('price')
+                                    ->label('Preço do serviço')
+                                    ->minLength(1)
+                                    ->maxLength(10)
+                                    ->live()
+                                    ->prefix('R$')
+                                    ->required(),
 
-                            Toggle::make('paid')
-                                ->label('Pago')
-                                ->onColor('success')
-                                ->offColor('danger')
-                                ->inline(false)
-                                ->default(false)
-                                ->hidden(false),
+                                Toggle::make('paid')
+                                    ->label('Pago')
+                                    ->onColor('success')
+                                    ->offColor('danger')
+                                    ->inline(false)
+                                    ->default(false)
+                                    ->hidden(false),
 
-                        ])->columns(4),
+                            ])->columns(4),
 
-                    Section::make('Informações do aparelho')
-                        ->schema([
-                            TextInput::make('device')
-                                ->label('Dispositivo')
-                                ->required()
-                                ->maxLength(100),
-                            TextInput::make('brand')
-                                ->label('Marca')
-                                ->required()
-                                ->maxLength(100),
-                            TextInput::make('model')
-                                ->label('Modelo')
-                                ->maxLength(100)
-                                ->default(null),
-                            TextInput::make('serial_number')
-                                ->label('Número de Série')
-                                ->maxLength(100)
-                                ->default(null),
-                            Textarea::make('description')
-                                ->label('Descrição')
-                                ->autosize()
-                                ->rows(4)
-                                ->columnSpanFull(),
-                        ])->columns(4),
+                        Section::make('Informações do aparelho')
+                            ->schema([
+                                TextInput::make('device')
+                                    ->label('Dispositivo')
+                                    ->required()
+                                    ->maxLength(100),
+                                TextInput::make('brand')
+                                    ->label('Marca')
+                                    ->required()
+                                    ->maxLength(100),
+                                TextInput::make('model')
+                                    ->label('Modelo')
+                                    ->maxLength(100)
+                                    ->default(null),
+                                TextInput::make('serial_number')
+                                    ->label('Número de Série')
+                                    ->maxLength(100)
+                                    ->default(null),
+                                Textarea::make('description')
+                                    ->label('Descrição')
+                                    ->autosize()
+                                    ->rows(4)
+                                    ->columnSpanFull(),
+                            ])->columns(4),
 
-                    
-                    
 
-                    
-                ])->columns(3)
+
+
+
+                    ])->columns(3)
             ]);
     }
 
